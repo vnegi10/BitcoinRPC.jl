@@ -5,10 +5,7 @@ quiet = length(ARGS) > 0 && ARGS[1] == "q"
 
 errors = false
 
-all_tests = ["test_blockRPCs.jl",
-             "test_chainRPCs.jl",
-             "test_mempoolRPCs.jl",
-             "test_txRPCs.jl"]
+all_tests = readdir("test_blockchainRPCs")
 
 # Get credentials for connecting to local node
 user_data = JSON.parsefile("/home/vikas/Documents/Input_JSON/VNEG_RPC_user_data.json")
@@ -24,7 +21,7 @@ println("Running full test suite:")
 
 @time for file in all_tests
     try
-        include(file)
+        include(joinpath("test_blockchainRPCs", file))
         println("\t\033[1m\033[32mPASSED\033[0m: $(file)")
     catch e
         println("\t\033[1m\033[31mFAILED\033[0m: $(file)")
