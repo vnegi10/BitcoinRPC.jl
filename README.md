@@ -1,7 +1,10 @@
 # BitcoinRPC.jl
 
-This package provides a Julia interface to Bitcoin's JSON-RPC API. Full API documentation
-can be found [here](https://developer.bitcoin.org/reference/rpc/index.html). 
+This package provides a Julia interface to Bitcoin's JSON-RPC API. 
+Only [blockchain RPCs](https://developer.bitcoin.org/reference/rpc/index.html) have been
+implemented for now. They should be enough for performing on-chain analytics, which is the
+primary motivation here. Remaining ones will be added later if necessary. Pull requests are 
+always welcome! 
 
 ## How to install?
 
