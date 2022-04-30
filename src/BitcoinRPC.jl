@@ -1,5 +1,8 @@
 module BitcoinRPC
 
-greet() = print("Hello World!")
+using JSON, HTTP, Dates, DataFrames
+
+include("types.jl")
+include("request.jl")
 
 end # module
