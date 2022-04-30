@@ -12,6 +12,12 @@ export get_best_block_hash,
     get_difficulty,
     get_mempool_ancestors,
     get_mempool_descendents,
+    get_mempool_entry,
+    get_mempool_info,
+    get_mempool_raw,
+    get_tx_out,
+    get_tx_out_setinfo,
+    verify_chain,
     UserAuth,
     StringOrInt
 

@@ -203,3 +203,124 @@ function get_mempool_descendents(auth::UserAuth; txid::String, verbose::Bool = t
 
     return do_try_catch(auth, "getmempooldescendants", params = [txid, verbose])
 end
+
+
+## https://developer.bitcoin.org/reference/rpc/getmempoolentry.html
+
+"""
+    get_mempool_entry(auth::UserAuth; txid::String)
+
+Returns mempool data for a given transaction.
+"""
+function get_mempool_entry(auth::UserAuth; txid::String)
+
+    return do_try_catch(auth, "getmempoolentry", params = [txid])
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/getmempoolinfo.html
+
+"""
+    get_mempool_info(auth::UserAuth)
+
+Returns details on the active state of the TX memory pool.
+"""
+function get_mempool_info(auth::UserAuth)
+
+    return do_try_catch(auth, "getmempoolinfo")
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/getrawmempool.html
+
+"""
+    get_mempool_raw(auth::UserAuth; verbose::Bool = false, mempool_sequence::Bool = false)
+
+Returns all transaction ids in memory pool as a json array of string transaction ids.
+"""
+function get_mempool_raw(auth::UserAuth; verbose::Bool = false, mempool_sequence::Bool = false)
+
+    result = do_try_catch(auth, "getrawmempool", params = [verbose, mempool_sequence])
+
+    return String.(result)
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/gettxout.html
+
+"""
+    get_tx_out(auth::UserAuth; txid::String, n::Int64 = 1, include_mempool::Bool = true)
+
+Returns details about an unspent transaction output.
+"""
+function get_tx_out(auth::UserAuth; txid::String, n::Int64 = 1, include_mempool::Bool = true)
+
+    return do_try_catch(auth, "gettxout", params = [txid, n, include_mempool])    
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/gettxoutproof.html
+
+## Not added because of the following limitation:
+
+#= Returns a hex-encoded proof that “txid” was included in a block. By default this function 
+only works sometimes. This is when there is an unspent output in the utxo for this transaction.
+To make it always work, you need to maintain a transaction index, using the -txindex command line
+option or specify the block in which the transaction is included manually (by blockhash).=#
+
+
+## https://developer.bitcoin.org/reference/rpc/gettxoutsetinfo.html
+
+"""
+
+Returns statistics about the unspent transaction output set.
+"""
+function get_tx_out_setinfo(auth::UserAuth; hash_type::String = "hash_serialized_2")
+
+    return do_try_catch(auth, "gettxoutsetinfo", params = [hash_type])
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/preciousblock.html
+## Not sure what's the use of this one, skipping for now.
+
+## https://developer.bitcoin.org/reference/rpc/savemempool.html
+## Skipping for now
+
+## https://developer.bitcoin.org/reference/rpc/scantxoutset.html
+## Skipping for now
+
+## https://developer.bitcoin.org/reference/rpc/verifychain.html
+"""
+    verify_chain(auth::UserAuth; checklevel::Int64 = 1, nblocks::Int64 = 10)
+
+Verifies blockchain database.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Optional keywords
+- `checklevel::Int64` : Control the thoroughness of block verification. Each level includes 
+                        the checks of the previous levels. Default is level 1.                      
+
+                        - level 0 reads the blocks from disk
+                        - level 1 verifies block validity
+                        - level 2 verifies undo data
+                        - level 3 checks disconnection of tip blocks
+                        - level 4 tries to reconnect the blocks
+- `nblocks::Int64` : number of blocks to check, default is set to 10
+
+# Example
+```julia-repl
+julia> verify_chain(auth, nblocks = 100)
+true
+```
+"""
+function verify_chain(auth::UserAuth; checklevel::Int64 = 1, nblocks::Int64 = 10)
+
+    return do_try_catch(auth, "verifychain", params = [checklevel, nblocks])
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/verifytxoutproof.html
+## Skipping for now
