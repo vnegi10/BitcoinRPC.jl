@@ -9,5 +9,6 @@ using JSON, HTTP, Dates, DataFrames
 include("types.jl")
 include("request.jl")
 include("blockchainRPC.jl")
+include("helpers.jl")
 
 end # module
