@@ -11,7 +11,7 @@ function generate_body(RPC_name::String, params)
 end	
 
 # Post a HTTP request
-function post_request(auth::UserAuth, RPC_name::String; params = [])
+function post_request(auth::UserAuth, RPC_name::String; params)
 
 	url = "http://$(auth.name):$(auth.pass)@127.0.0.1:$(auth.port)"
 
@@ -31,9 +31,14 @@ function post_request(auth::UserAuth, RPC_name::String; params = [])
 
 	result = response_dict["result"]
 
-	if "time" in keys(result)
-		result["time"] = unix2datetime(result["time"])
-	end
+    # Convert UNIX epoch to DateTime
+    key_names = ["time", "mediantime"]
+
+    for key ∈ key_names        
+        if key in keys(result)
+            result[key] = unix2datetime(result[key])
+        end
+    end
 
 	return result
 end	
