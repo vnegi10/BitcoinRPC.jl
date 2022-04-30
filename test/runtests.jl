@@ -6,7 +6,8 @@ quiet = length(ARGS) > 0 && ARGS[1] == "q"
 errors = false
 
 all_tests = ["test_blockRPCs.jl",
-             "test_chainRPCs.jl"]
+             "test_chainRPCs.jl",
+             "test_mempoolRPCs.jl"]
 
 # Get credentials for connecting to local node
 user_data = JSON.parsefile("/home/vikas/Documents/Input_JSON/VNEG_RPC_user_data.json")
@@ -16,6 +17,7 @@ const AUTH = UserAuth(user_data["user"],
                       user_data["port"])
 
 const BLOCKHASH = get_best_block_hash(AUTH)
+const TX_IN_MEMPOOL = get_mempool_raw(AUTH)
 
 println("Running full test suite:")
 
