@@ -7,7 +7,8 @@ errors = false
 
 all_tests = ["test_blockRPCs.jl",
              "test_chainRPCs.jl",
-             "test_mempoolRPCs.jl"]
+             "test_mempoolRPCs.jl",
+             "test_txRPCs.jl"]
 
 # Get credentials for connecting to local node
 user_data = JSON.parsefile("/home/vikas/Documents/Input_JSON/VNEG_RPC_user_data.json")
