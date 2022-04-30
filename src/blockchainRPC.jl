@@ -139,7 +139,7 @@ given search window.
 
 # Example
 ```julia-repl
-julia> get_chain_txstats(auth, nblocks = 1440, blockhash = get_block_hash(auth, height = 700000))
+julia> get_chain_txstats(auth, nblocks = 1440, blockhash = get_block_hash(auth, height = 700_000))
 Dict{String, Any} with 8 entries:
   "txcount"                   => 669566382
   "window_tx_count"           => 2512428

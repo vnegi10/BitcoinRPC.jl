@@ -22,7 +22,7 @@ get_block_hash, get_block_header, get_block_stats =#
     end
 
     @testset "get_block_hash" begin        
-        @test get_block_hash(AUTH, height = 500000) == 
+        @test get_block_hash(AUTH, height = 500_000) == 
         "00000000000000000024fb37364cbf81fd49cc2d51c09c75c35433c3a1945d04"
     end
 
@@ -31,7 +31,7 @@ get_block_hash, get_block_header, get_block_stats =#
     end
 
     @testset "get_block_stats" begin
-        for input in [BLOCKHASH, 550000]
+        for input in [BLOCKHASH, 550_000]
             @test ~isempty(get_block_stats(AUTH, hashORheight = input))
         end        
     end 
