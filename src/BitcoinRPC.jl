@@ -9,6 +9,9 @@ export get_best_block_hash,
     get_block_stats,
     get_chain_tips,
     get_chain_txstats,
+    get_difficulty,
+    get_mempool_ancestors,
+    get_mempool_descendents,
     UserAuth,
     StringOrInt
 

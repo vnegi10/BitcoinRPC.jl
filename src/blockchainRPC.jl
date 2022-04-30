@@ -165,3 +165,41 @@ function get_chain_txstats(auth::UserAuth; nblocks::Int64 = 144, blockhash::Stri
 
     return result
 end
+
+
+## https://developer.bitcoin.org/reference/rpc/getdifficulty.html
+
+"""
+    get_difficulty(auth::UserAuth)
+
+Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
+"""
+function get_difficulty(auth::UserAuth)
+    return do_try_catch(auth, "getdifficulty")
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/getmempoolancestors.html
+
+"""
+    get_mempool_ancestors(auth::UserAuth; txid::String, verbose::Bool = true)
+
+If txid is in the mempool, returns all in-mempool ancestors.
+"""
+function get_mempool_ancestors(auth::UserAuth; txid::String, verbose::Bool = true)
+
+    return do_try_catch(auth, "getmempoolancestors", params = [txid, verbose])
+end
+
+
+## https://developer.bitcoin.org/reference/rpc/getmempooldescendants.html
+
+"""
+    get_mempool_descendents(auth::UserAuth; txid::String, verbose::Bool = true)
+
+If txid is in the mempool, returns all in-mempool descendants.
+"""
+function get_mempool_descendents(auth::UserAuth; txid::String, verbose::Bool = true)
+
+    return do_try_catch(auth, "getmempooldescendants", params = [txid, verbose])
+end
