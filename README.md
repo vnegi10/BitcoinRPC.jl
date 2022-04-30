@@ -5,8 +5,10 @@ can be found [here](https://developer.bitcoin.org/reference/rpc/index.html).
 
 ## How to install?
 
-* Press ']' to enter Pkg prompt
-* add BitcoinRPC
+```julia
+using Pkg
+Pkg.add("https://github.com/vnegi10/BitcoinRPC.jl.git")
+```
 
 ## Prerequisite
 
@@ -72,4 +74,17 @@ Dict{String, Any} with 18 entries:
   "nTx"               => 2826
   "chainwork"         => "00000000000000000000000000000000000000002cf79dc7911c9663902061d0"
   "nonce"             => 2198508859
+  ```
+
+  ```julia
+  julia> get_chain_txstats(auth, nblocks = 1440, blockhash = get_block_hash(auth, height = 700000))
+Dict{String, Any} with 8 entries:
+  "txcount"                   => 669566382
+  "window_tx_count"           => 2512428
+  "time"                      => DateTime("2021-09-11T04:14:32")
+  "window_interval"           => 821264
+  "window_final_block_height" => 700000
+  "window_final_block_hash"   => "0000000000000000000590fc0f3eba193a278534220b2b37e9849e1a770ca959"
+  "window_block_count"        => 1440
+  "txrate"                    => 3.05922
   ```
