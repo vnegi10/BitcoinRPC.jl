@@ -21,6 +21,7 @@ export show_best_block_hash,
     show_network_hashps,
     verify_chain,
     collect_block_stats,
+    collect_network_stats,
     UserAuth,
     StringOrInt
 
@@ -32,6 +33,7 @@ include("request.jl")
 include("blockchainRPC.jl")
 include("miningRPC.jl")
 
+include("analytics.jl")
 include("helpers.jl")
 
 end # module
