@@ -5,7 +5,16 @@ quiet = length(ARGS) > 0 && ARGS[1] == "q"
 
 errors = false
 
-all_tests = readdir("test_blockchainRPCs")
+# Location of test files
+filepaths = String[]
+
+for (root, dirs, files) in walkdir(@__DIR__)
+    for file in files
+        if startswith(file, "test_") && endswith(file, ".jl")
+            push!(filepaths, joinpath(root, file))
+        end
+    end
+end
 
 # Get credentials for connecting to local node
 user_data = JSON.parsefile("/home/vikas/Documents/Input_JSON/VNEG_RPC_user_data.json")
@@ -19,9 +28,9 @@ const TX_IN_MEMPOOL = get_mempool_raw(AUTH)
 
 println("Running full test suite:")
 
-@time for file in all_tests
+@time for file in filepaths
     try
-        include(joinpath("test_blockchainRPCs", file))
+        include(file)
         println("\t\033[1m\033[32mPASSED\033[0m: $(file)")
     catch e
         println("\t\033[1m\033[31mFAILED\033[0m: $(file)")

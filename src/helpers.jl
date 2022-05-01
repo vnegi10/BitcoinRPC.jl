@@ -56,7 +56,13 @@ function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int6
 		j += 1
 	end
 
-	df_stats = vcat(DataFrame.(results)...)
+	df_stats = DataFrame()
+    
+    try
+        df_stats = vcat(DataFrame.(results)...)
+    catch e
+        @info "Unable to create a DataFrame, check this error: $(e)"
+    end
 
 	return df_stats
 end

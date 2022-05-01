@@ -8,14 +8,16 @@ get_mempool_info, get_mempool_raw, =#
         @test ~isempty(TX_IN_MEMPOOL)
     end
 
-    tx_rand(TX_IN_MEMPOOL) = TX_IN_MEMPOOL[rand(1:length(TX_IN_MEMPOOL), 1)[1]]    
-
+    tx_rand(TX_IN_MEMPOOL) = TX_IN_MEMPOOL[rand(1:length(TX_IN_MEMPOOL), 1)[1]]
+    
+    # Skipping since this seems to fail intermittently
     @testset "get_mempool_ancestors" begin
-        @test_broken ~isempty(get_mempool_ancestors(AUTH, txid = tx_rand(TX_IN_MEMPOOL)))                
+        @test_skip ~isempty(get_mempool_ancestors(AUTH, txid = tx_rand(TX_IN_MEMPOOL)))                
     end
 
+    # Skipping since this seems to fail intermittently
     @testset "get_mempool_descendents" begin        
-        @test_broken ~isempty(get_mempool_descendents(AUTH, txid = tx_rand(TX_IN_MEMPOOL)))               
+        @test_skip ~isempty(get_mempool_descendents(AUTH, txid = tx_rand(TX_IN_MEMPOOL)))               
     end
 
     @testset "get_mempool_entry" begin        

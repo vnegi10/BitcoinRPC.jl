@@ -3,8 +3,9 @@ get_tx_out, get_tx_out_setinfo =#
 
 @testset verbose = true "Transaction related RPCs" begin
 
+    # Skipping since txid should be linked to an unspent transaction
     @testset "get_tx_out" begin
-        @test ~isempty(get_tx_out(AUTH, txid = get_mempool_raw(AUTH)[1]))        
+        @test_skip ~isempty(get_tx_out(AUTH, txid = get_mempool_raw(AUTH)[1]))        
     end
     
     # Skipping since it takes some time to make this call
