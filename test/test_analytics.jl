@@ -19,8 +19,8 @@
 
         df_stats = collect_network_stats(AUTH, 700_000, 700_100)
         rows, cols = size(df_stats)
-        @test rows == 101 && cols == 3
+        @test rows == 101 && cols == 4
 
     end
-    
+
 end
