@@ -17,6 +17,8 @@ export show_best_block_hash,
     show_mempool_raw,
     show_tx_out,
     show_tx_out_setinfo,
+    show_mining_info,
+    show_network_hashps,
     verify_chain,
     collect_block_stats,
     UserAuth,
@@ -26,7 +28,10 @@ using JSON, HTTP, Dates, DataFrames
 
 include("types.jl")
 include("request.jl")
+
 include("blockchainRPC.jl")
+include("miningRPC.jl")
+
 include("helpers.jl")
 
 end # module
