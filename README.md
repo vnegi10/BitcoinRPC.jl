@@ -57,6 +57,10 @@ usage information can also be obtained via REPL help:
 ## Example usage
 
 ```julia
+auth = UserAuth("rpcuser", "rpcpassword", rpcport)
+```
+
+```julia
 julia> show_block(auth, blockhash = show_best_block_hash(auth), verbosity = 1)
 Dict{String, Any} with 18 entries:
   "time"              => DateTime("2022-04-30T16:06:39")
