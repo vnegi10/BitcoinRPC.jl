@@ -23,8 +23,8 @@ const AUTH = UserAuth(user_data["user"],
                       user_data["pass"],
                       user_data["port"])
 
-const BLOCKHASH = get_best_block_hash(AUTH)
-const TX_IN_MEMPOOL = get_mempool_raw(AUTH)
+const BLOCKHASH = show_best_block_hash(AUTH)
+const TX_IN_MEMPOOL = show_mempool_raw(AUTH)
 
 println("Running full test suite:")
 

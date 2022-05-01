@@ -57,7 +57,7 @@ usage information can also be obtained via REPL help:
 ## Example usage
 
 ```julia
-julia> get_block(auth, blockhash = get_best_block_hash(auth), verbosity = 1)
+julia> show_block(auth, blockhash = show_best_block_hash(auth), verbosity = 1)
 Dict{String, Any} with 18 entries:
   "time"              => DateTime("2022-04-30T16:06:39")
   "difficulty"        => 2.97944e13
@@ -80,7 +80,7 @@ Dict{String, Any} with 18 entries:
   ```
 
   ```julia
-  julia> get_chain_txstats(auth, nblocks = 1440, blockhash = get_block_hash(auth, height = 700000))
+  julia> show_chain_txstats(auth, nblocks = 1440, blockhash = show_block_hash(auth, height = 700000))
 Dict{String, Any} with 8 entries:
   "txcount"                   => 669566382
   "window_tx_count"           => 2512428

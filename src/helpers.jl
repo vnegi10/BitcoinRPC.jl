@@ -45,13 +45,13 @@ julia> collect_block_stats(auth, 700_000, 700_005)
 """
 function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64)
 
-    @assert 0 ≤ block_start < block_end ≤ get_block_count(auth) "Invalid block height"
+    @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
 	results = Array{Dict}(undef, block_end - block_start + 1)
 	j = 1
 
 	for i = block_start:block_end
-		results[j] = get_block_stats(auth, hashORheight = i)
+		results[j] = show_block_stats(auth, hashORheight = i)
 		delete!(results[j], "feerate_percentiles")
 		j += 1
 	end
