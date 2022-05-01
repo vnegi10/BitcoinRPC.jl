@@ -1,6 +1,6 @@
-# Run tests on helper functions
+# Run tests on functions for blockchain and network analytics
 
-@testset verbose = true "Helper functions" begin
+@testset verbose = true "Analytics functions" begin
 
     @testset "collect_block_stats" begin
 
@@ -12,6 +12,14 @@
                                          stats = ["avgfee", "utxo_increase"])
         rows, cols = size(df_stats_2)
         @test rows == 101 && cols == 2
+
+    end
+
+    @testset "collect_network_stats" begin
+
+        df_stats = collect_network_stats(AUTH, 700_000, 700_100)
+        rows, cols = size(df_stats)
+        @test rows == 101 && cols == 4
 
     end
 
