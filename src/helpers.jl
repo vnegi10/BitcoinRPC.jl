@@ -43,7 +43,7 @@ julia> collect_block_stats(auth, 700_000, 700_005)
    6 │ 4.076e-5        1.0e-7        552  0000000000000000000add9a48ae518c…  700005   1924  0.00140826     1.6e-6       23237   1.101e-
 ```
 """
-function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64)
+function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64; stats = "")
 
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
@@ -51,8 +51,12 @@ function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int6
 	j = 1
 
 	for i = block_start:block_end
-		results[j] = show_block_stats(auth, hashORheight = i)
-		delete!(results[j], "feerate_percentiles")
+        if isempty(stats)
+            results[j] = show_block_stats(auth, hashORheight = i)
+            delete!(results[j], "feerate_percentiles")
+        else
+            results[j] = show_block_stats(auth, hashORheight = i, stats = stats)
+        end		
 		j += 1
 	end
 
