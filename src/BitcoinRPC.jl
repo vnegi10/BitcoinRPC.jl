@@ -18,6 +18,7 @@ export get_best_block_hash,
     get_tx_out,
     get_tx_out_setinfo,
     verify_chain,
+    collect_block_stats,
     UserAuth,
     StringOrInt
 
