@@ -10,9 +10,13 @@ function do_try_catch(auth::UserAuth, method::String; params = [])
         if isa(e, HTTP.ExceptionRequest.StatusError)
             code = e.status
             if code == 404
+                @warn("input method is likely NOK")
                 error("HTTP - Not Found")
+                
             elseif code == 500
+                @warn("input parameter is likely NOK")
                 error("HTTP - Internal Server Error")
+
             else
                 error("$(e)")
             end
