@@ -1,4 +1,4 @@
-using Test, JSON, Dates, BitcoinRPC
+using Test, JSON, Dates, HTTP, BitcoinRPC
 
 # Argument for quiet mode
 quiet = length(ARGS) > 0 && ARGS[1] == "q"

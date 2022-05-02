@@ -29,6 +29,10 @@ function post_request(auth::UserAuth, RPC_name::String; params)
 
 	response_dict = String(response.body) |> JSON.parse
 
+    if ~("result" in keys(response_dict))
+        error("missing JSON-RPC result")
+    end    
+
 	result = response_dict["result"]
 
     # Convert UNIX epoch to DateTime
