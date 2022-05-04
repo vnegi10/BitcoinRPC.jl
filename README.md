@@ -54,6 +54,8 @@ usage information can also be obtained via REPL help:
 * Press '?' to enter the help mode
 * Type function name and press enter
 
+**Documentation:** [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://vnegi10.github.io/BitcoinRPC.jl/stable)
+
 ## Example usage
 
 ```julia
