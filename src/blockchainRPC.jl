@@ -87,21 +87,11 @@ Compute per block statistics for a given window. All amounts are in satoshis.
 function show_block_stats(auth::UserAuth; hashORheight::StringOrInt = 0, stats = "")
 
     result = ""
-
-    if isempty(stats)
-        result = do_try_catch(auth, "getblockstats", params = [hashORheight])
-    else
-        result = do_try_catch(auth, "getblockstats", params = [hashORheight, stats])
-    end
-
-    all_keys = keys(result) |> collect
-
-    # Convert Satoshis to BTC
-    for key in all_keys
-        if occursin("fee", key)
-            result[key] /= 1e8
-        end
-    end
+    
+    get_params() = isempty(stats) ? [hashORheight] : [hashORheight, stats]
+        
+    result = do_try_catch(auth, "getblockstats", params = get_params())
+    sato_to_btc!(result)
 
     return result
 end
