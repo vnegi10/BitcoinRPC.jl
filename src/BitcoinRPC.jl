@@ -21,6 +21,7 @@ export show_best_block_hash,
     show_network_hashps,
     verify_chain,
     collect_block_stats,
+    collect_block_stats_batch,
     collect_network_stats,
     UserAuth,
     StringOrInt

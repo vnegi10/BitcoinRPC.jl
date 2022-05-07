@@ -49,7 +49,9 @@ function post_request(auth::UserAuth, RPC_name::String; params)
 end	
 
 # Add support for batch requests
-function generate_body_batch(RPC_name::String, params)
+function generate_body_batch(RPC_name::String, params::String)
+
+    params = convert_to_int(params)
 
 	bodies = Dict{String, Any}[]
 	i = 1
@@ -66,7 +68,7 @@ function generate_body_batch(RPC_name::String, params)
 	return JSON.json(bodies)
 end
 
-function post_request_batch(auth::UserAuth, RPC_name::String; params = [])
+function post_request_batch(auth::UserAuth, RPC_name::String; params::String)
 
 	url = "http://$(auth.name):$(auth.pass)@127.0.0.1:8332"
 

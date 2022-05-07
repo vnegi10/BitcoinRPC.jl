@@ -41,3 +41,21 @@ function sato_to_btc!(result)
 
     return result
 end
+
+# Convert list of params from String to Int64
+function convert_to_int(params::String)
+
+    # Example for params input: "[500,501,502,503,504...]"
+
+    all_params = split(params, ",")
+	all_params[1] = strip(all_params[1], [ '[' ])
+	all_params[end] = strip(all_params[end], [ ']' ])
+
+	params_int = Int64[]
+
+	for par in all_params
+		push!(params_int, parse(Int64, par))
+	end
+    
+    return params_int
+end
