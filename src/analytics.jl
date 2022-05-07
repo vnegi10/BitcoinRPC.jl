@@ -94,9 +94,8 @@ function collect_block_stats_batch(auth::UserAuth, block_start::Int64,
 
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
-    batch_size = batchsize
     num_blocks = block_end - block_start + 1
-    @assert num_blocks > batch_size "number of blocks too small, use without batch"
+    @assert num_blocks > batchsize "number of blocks too small, use without batch"
 
     results = ""
     all_results = Any[]
@@ -105,7 +104,7 @@ function collect_block_stats_batch(auth::UserAuth, block_start::Int64,
 
     while i < block_end
 
-        j = i + batch_size
+        j = i + batchsize
 
         if j ≥ block_end
             j = block_end
