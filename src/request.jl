@@ -47,3 +47,62 @@ function post_request(auth::UserAuth, RPC_name::String; params)
 
 	return result
 end	
+
+# Add support for batch requests
+function generate_body_batch(RPC_name::String, params::String, stats)
+
+    params = convert_to_int(params)
+
+	bodies = Dict{String, Any}[]
+	i = 1
+
+	for param in params
+
+        par = ~isempty(stats) ? [param, stats] : [param]
+        
+        body_dict = Dict("method" => RPC_name, 
+		                 "params" => par, 
+		                 "id" => i,
+		                 "jsonrpc" => "2.0")
+		push!(bodies, body_dict)
+		i += 1
+	end
+	
+	return JSON.json(bodies)
+end
+
+function post_request_batch(auth::UserAuth, RPC_name::String; 
+                            params::String, stats)
+
+	url = "http://$(auth.name):$(auth.pass)@127.0.0.1:8332"
+
+	bodies = generate_body_batch(RPC_name, params, stats)
+	headers = ["Content-Type" => "application/json"]
+
+	response = HTTP.request(
+        "POST",
+        url,
+        headers,
+        bodies;
+        verbose = 0,
+        retries = 2
+    )
+
+	response_dicts = String(response.body) |> JSON.parse
+
+    #= Keep it like this since results can be Strings (hashes), 
+    Numbers or Dicts =#
+	results = Any[]
+
+	for response_dict in response_dicts		
+		result = response_dict["result"]
+
+		if "time" in keys(result)
+			result["time"] = unix2datetime(result["time"])
+		end	
+
+		push!(results, result)
+	end
+
+	return results
+end

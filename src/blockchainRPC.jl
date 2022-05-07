@@ -171,7 +171,7 @@ Compute per block statistics for a given window. All amounts are in BTC.
 
 # Optional keywords
 - `hashORheight::StringOrInt` : Block hash or height
-- `stats` : Specific group of stats, e.g. ["avgfee", "utxo_increase"]  
+- `stats` : Select specific values to return, e.g. ["avgfee", "avgtxsize"], default is "".  
 
 # Example
 ```julia-repl
