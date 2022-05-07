@@ -164,7 +164,7 @@ end
 """
     show_block_stats(auth::UserAuth; hashORheight::StringOrInt = 0, stats = "")
 
-Compute per block statistics for a given window. All amounts are in satoshis.
+Compute per block statistics for a given window. All amounts are in BTC.
 
 # Arguments
 - `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`

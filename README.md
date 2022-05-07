@@ -8,10 +8,8 @@ always welcome!
 
 ## How to install?
 
-```julia
-using Pkg
-Pkg.add("https://github.com/vnegi10/BitcoinRPC.jl.git")
-```
+* Press ']' to enter Pkg prompt
+* add BitcoinRPC
 
 ## Prerequisite
 
