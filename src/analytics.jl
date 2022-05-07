@@ -40,7 +40,7 @@ function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int6
             push!(results, result)
         catch e
             @info "Ran into error $(e)"
-            @info "Could not fetch data for block $(i), will continue to next block!"
+            @info "Could not fetch data for block $(i), will continue to next!"
             continue
         end 
     end   
@@ -88,7 +88,7 @@ function collect_network_stats(auth::UserAuth, block_start::Int64, block_end::In
     df_stats = collect_block_stats(auth, block_start, block_end, 
                                    stats = ["height", "time"])
 
-    network_hash = [show_network_hashps(auth, height = h) for h = block_start:block_end]
+    network_hash = [show_network_hashps(auth, height = h) for h in df_stats[!, :height]]
 
     # Based on calculation from https://en.bitcoin.it/wiki/Difficulty
     # Network hash rate = D * 2**32 / 600
