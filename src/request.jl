@@ -1,9 +1,10 @@
 # Generate a valid body for HTTP request
 function generate_body(RPC_name::String, params)
 
-	body_dict = Dict("method" => RPC_name, 
-		             "params" => params, 
-		                 "id" => "jsonrpc")
+	body_dict = Dict("method"  => RPC_name, 
+		             "params"  => params, 
+		             "id"      => 1,
+                     "jsonrpc" => "2.0")
 	
 	body = JSON.json(body_dict)
 
