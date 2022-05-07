@@ -27,3 +27,17 @@ function do_try_catch(auth::UserAuth, method::String; params = [])
 
     return result
 end
+
+# Convert Satoshis to BTC
+function sato_to_btc!(result)
+
+    all_keys = keys(result) |> collect
+
+    for key in all_keys
+        if occursin("fee", key)
+            result[key] /= 1e8
+        end
+    end
+
+    return result
+end

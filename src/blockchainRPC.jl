@@ -4,6 +4,15 @@
     show_best_block_hash(auth::UserAuth)
 
 Returns the hash of the best (tip) block in the most-work fully-validated chain.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_best_block_hash(auth)
+"00000000000000000004202bf6a4b09fcfde643a4a1d206f18949308bc505011"
+```
 """
 function show_best_block_hash(auth::UserAuth)
     return do_try_catch(auth, "getbestblockhash")
@@ -13,9 +22,29 @@ end
 ## https://developer.bitcoin.org/reference/rpc/getblock.html
 
 """
-    show_block(auth::UserAuth; blockhash::String, verbosity::Int64 = 0)
+    show_block(auth::UserAuth; blockhash::String, verbosity::Int64 = 1)
 
 Get block data depending on selected verbosity.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Optional keywords
+- `verbosity::Int64` : If verbosity is 0, returns a string that is serialized, hex-encoded data 
+                       for block `hash`. If verbosity is 1, returns an object with information 
+                       about block `hash`. If verbosity is 2, returns an object with information 
+                       about block `hash` and information about each transaction.
+
+# Example
+```julia-repl
+julia> show_block(auth, blockhash = show_best_block_hash(auth), verbosity = 1)
+Dict{String, Any} with 18 entries:
+  "time"              => DateTime("2022-05-07T01:13:07")
+  "difficulty"        => 2.97944e13
+  "bits"              => "17097275"
+  "previousblockhash" => "00000000000000000007c2e512cf0b3f99cec4334c3499f4d477babc63a1b77b"
+  "merkleroot"        => "d0fda1281cec9719be434acb24a81715f98ac0948a445f1b6b4e967d8781615c"
+```
 """
 function show_block(auth::UserAuth; blockhash::String, verbosity::Int64 = 0)
 
@@ -29,6 +58,21 @@ end
     show_blockchain_info(auth::UserAuth)
 
 Returns an object containing various state info regarding blockchain processing.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_blockchain_info(auth)
+Dict{String, Any} with 13 entries:
+  "verificationprogress" => 0.999998
+  "difficulty"           => 2.97944e13
+  "chain"                => "main"
+  "initialblockdownload" => false
+  "size_on_disk"         => 459765806919
+...
+```
 """
 function show_blockchain_info(auth::UserAuth)
     return do_try_catch(auth, "getblockchaininfo")
@@ -41,6 +85,15 @@ end
     show_block_count(auth::UserAuth)
 
 Returns the height of the most-work fully-validated chain.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_block_count(auth)
+735241
+```
 """
 function show_block_count(auth::UserAuth)
     return do_try_catch(auth, "getblockcount")
@@ -53,6 +106,16 @@ end
     show_block_hash(auth::UserAuth; height::Int64 = 0)
 
 Returns hash of block in best-block-chain at height provided.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+- `height::Int64` : Height of the desired block, default is set to 0.
+
+# Example
+```julia-repl
+julia> show_block_hash(auth, height = 696969)
+"0000000000000000000b3e2716da675f99df43134a67fc1987c5590f1c370472"
+```
 """
 function show_block_hash(auth::UserAuth; height::Int64 = 0)
     
@@ -67,9 +130,28 @@ end
 """
     show_block_header(auth::UserAuth; blockhash::String, verbose::Bool=true)
 
-If verbose is false, returns a string that is serialized, hex-encoded data for blockheader `hash`.
+Returns the contents of the block header.
 
-If verbose is true, returns an Object with information about blockheader `hash`.
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+- `blockhash::String` : Hash of the desired block
+
+# Optional keywords
+- `verbose::Bool` : If verbose is false, returns a string that is serialized, hex-encoded 
+                    data for blockheader `hash`. If verbose is true (default), returns an 
+                    object with information about blockheader `hash`.
+
+# Result
+```julia-repl
+julia> show_block_header(auth, blockhash = show_block_hash(auth, height = 700_000))
+Dict{String, Any} with 15 entries:
+  "time"              => DateTime("2021-09-11T04:14:32")
+  "difficulty"        => 1.84152e13
+  "bits"              => "170f48e4"
+  "previousblockhash" => "0000000000000000000aa3ce000eb559f4143be419108134e0ce71042fc636eb"
+  "nextblockhash"     => "00000000000000000002f39baabb00ffeb47dbdb425d5077baa62c47482b7e92"
+...
+```
 """
 function show_block_header(auth::UserAuth; blockhash::String, verbose::Bool=true)
 
@@ -83,25 +165,34 @@ end
     show_block_stats(auth::UserAuth; hashORheight::StringOrInt = 0, stats = "")
 
 Compute per block statistics for a given window. All amounts are in satoshis.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Optional keywords
+- `hashORheight::StringOrInt` : Block hash or height
+- `stats` : Specific group of stats, e.g. ["avgfee", "utxo_increase"]  
+
+# Example
+```julia-repl
+julia> show_block_stats(auth, hashORheight = 500_000)
+Dict{String, Any} with 29 entries:
+  "avgtxsize"           => 388
+  "time"                => DateTime("2017-12-18T18:35:25")
+  "totalfee"            => 3.39352
+  "utxo_increase"       => 1899
+  "total_out"           => 1401737618054
+...
+```
 """
 function show_block_stats(auth::UserAuth; hashORheight::StringOrInt = 0, stats = "")
 
     result = ""
-
-    if isempty(stats)
-        result = do_try_catch(auth, "getblockstats", params = [hashORheight])
-    else
-        result = do_try_catch(auth, "getblockstats", params = [hashORheight, stats])
-    end
-
-    all_keys = keys(result) |> collect
-
-    # Convert Satoshis to BTC
-    for key in all_keys
-        if occursin("fee", key)
-            result[key] /= 1e8
-        end
-    end
+    
+    get_params() = isempty(stats) ? [hashORheight] : [hashORheight, stats]
+        
+    result = do_try_catch(auth, "getblockstats", params = get_params())
+    sato_to_btc!(result)
 
     return result
 end
@@ -114,6 +205,16 @@ end
 
 Return information about all known tips in the block tree, including the main chain as well 
 as orphaned branches.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_chain_tips(auth)
+1-element Vector{Any}:
+ Dict{String, Any}("height" => 735239, "branchlen" => 0, "status" => "active", "hash" => ...
+```
 """
 function show_chain_tips(auth::UserAuth)
     return do_try_catch(auth, "getchaintips")
@@ -173,6 +274,15 @@ end
     show_difficulty(auth::UserAuth)
 
 Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_difficulty(auth)
+2.979440758931208e13
+```
 """
 function show_difficulty(auth::UserAuth)
     return do_try_catch(auth, "getdifficulty")
@@ -224,6 +334,20 @@ end
     show_mempool_info(auth::UserAuth)
 
 Returns details on the active state of the TX memory pool.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_mempool_info(auth)
+Dict{String, Any} with 9 entries:
+  "unbroadcastcount" => 0
+  "maxmempool"       => 1000000000
+  "bytes"            => 1272046
+  "loaded"           => true
+  "usage"            => 6281104
+  ...
 """
 function show_mempool_info(auth::UserAuth)
 
@@ -237,6 +361,19 @@ end
     show_mempool_raw(auth::UserAuth; verbose::Bool = false, mempool_sequence::Bool = false)
 
 Returns all transaction ids in memory pool as a json array of string transaction ids.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+
+# Example
+```julia-repl
+julia> show_mempool_raw(auth)
+2225-element Vector{String}:
+ "46db70c88170e584b6787adc7561a6aa06ddce51f8bcd34bd4576ce0114e55ea"
+ "5e17a3b3bf10e137050734ac884fb496e5933ebc7401764f62c60b18f58df891"
+ "3fa233c8bcb8f2002b4997507c36a887c76359719c643a7e93541a7230f84b9c"
+ ...
+```
 """
 function show_mempool_raw(auth::UserAuth; verbose::Bool = false, mempool_sequence::Bool = false)
 

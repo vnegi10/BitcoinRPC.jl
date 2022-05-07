@@ -28,18 +28,22 @@ function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int6
 
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
-	results = Array{Dict}(undef, block_end - block_start + 1)
-	j = 1
+	results = Dict{String, Any}[]
 
-	for i = block_start:block_end
-        if isempty(stats)
-            results[j] = show_block_stats(auth, hashORheight = i)
-            delete!(results[j], "feerate_percentiles")
-        else
-            results[j] = show_block_stats(auth, hashORheight = i, stats = stats)
-        end		
-		j += 1
-	end
+    get_params(i::Int64) = isempty(stats) ? [i] : [i, stats]		
+    
+    for i = block_start:block_end
+        try
+            result = post_request(auth, "getblockstats"; params = get_params(i))
+            delete!(result, "feerate_percentiles")
+            sato_to_btc!(result)
+            push!(results, result)
+        catch e
+            @info "Ran into error $(e)"
+            @info "Could not fetch data for block $(i), will continue to next!"
+            continue
+        end 
+    end   
 
 	df_stats = DataFrame()
     
@@ -84,7 +88,7 @@ function collect_network_stats(auth::UserAuth, block_start::Int64, block_end::In
     df_stats = collect_block_stats(auth, block_start, block_end, 
                                    stats = ["height", "time"])
 
-    network_hash = [show_network_hashps(auth, height = h) for h = block_start:block_end]
+    network_hash = [show_network_hashps(auth, height = h) for h in df_stats[!, :height]]
 
     # Based on calculation from https://en.bitcoin.it/wiki/Difficulty
     # Network hash rate = D * 2**32 / 600
