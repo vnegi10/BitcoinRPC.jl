@@ -99,7 +99,7 @@ function collect_block_stats_batch(auth::UserAuth, block_start::Int64,
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
     num_blocks = block_end - block_start + 1
-    @assert num_blocks > batchsize "number of blocks too small, use without batch"
+    @assert num_blocks > batchsize "number of blocks is smaller than the batch size"
 
     results = ""
     all_results = Any[]
@@ -152,35 +152,38 @@ end
 
 
 """
-    collect_network_stats(auth::UserAuth, block_start::Int64, block_end::Int64)
+    collect_network_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64;
+    batchsize::Int64 = 50)
 
-Collect block and network statistics by iterating over a range of blocks.
+Collect block and network statistics by iterating over a range of blocks in batches.
 
 # Arguments
 - `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
 - `block_start::Int64` : Starting block height
 - `block_end::Int64` : Ending block height
 
+# Optional keywords
+- `batchsize::Int64` : Request can be sent in batches of given size, default is set to 50.
+
 # Example
 ```julia-repl
-julia> collect_network_stats(auth, 700_000, 700_100)
-101×4 DataFrame
+julia> collect_network_stats_batch(auth, 600_000, 600_699, batchsize = 100)
+700×4 DataFrame
  Row │ height  time                 network_hash  difficulty 
      │ Int64   DateTime             Float64       Float64    
 ─────┼───────────────────────────────────────────────────────
-   1 │ 700000  2021-09-11T04:14:32    1.29538e20  1.80963e13
-   2 │ 700001  2021-09-11T04:15:02    1.29813e20  1.81346e13
-   3 │ 700002  2021-09-11T04:17:07    1.30042e20  1.81666e13
-   4 │ 700003  2021-09-11T04:17:57    1.30306e20  1.82036e13
-   5 │ 700004  2021-09-11T04:20:45    1.30515e20  1.82327e13
+   1 │ 600000  2019-10-19T00:04:21    9.59932e19  1.34101e13
+   2 │ 600001  2019-10-19T00:06:53    9.60499e19  1.3418e13
+   3 │ 600002  2019-10-19T00:14:35    9.60657e19  1.34202e13
+   4 │ 600003  2019-10-19T00:39:08    9.59483e19  1.34038e13
+   5 │ 600004  2019-10-19T00:46:56    9.59633e19  1.34059e13
 ```
 """
-function collect_network_stats(auth::UserAuth, block_start::Int64, block_end::Int64)
+function collect_network_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64;
+                                     batchsize::Int64 = 50)
 
-    @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
-
-    df_stats = collect_block_stats(auth, block_start, block_end, 
-                                   stats = ["height", "time"])
+    df_stats = collect_block_stats_batch(auth, block_start, block_end, batchsize = batchsize,
+                                         stats = ["height", "time"])
 
     network_hash = [show_network_hashps(auth, height = h) for h in df_stats[!, :height]]
 
@@ -192,4 +195,4 @@ function collect_network_stats(auth::UserAuth, block_start::Int64, block_end::In
     insertcols!(df_stats, :network_hash, :difficulty => difficulty, after = true)
 
     return df_stats
-end
+end    

@@ -22,7 +22,7 @@ export show_best_block_hash,
     verify_chain,
     collect_block_stats,
     collect_block_stats_batch,
-    collect_network_stats,
+    collect_network_stats_batch,
     UserAuth,
     StringOrInt
 
