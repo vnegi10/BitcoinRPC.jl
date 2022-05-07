@@ -10,6 +10,9 @@ Collect statistics by iterating over a range of blocks.
 - `block_start::Int64` : Starting block height
 - `block_end::Int64` : Ending block height
 
+# Optional keywords
+- `stats` : Select specific values to return, e.g. ["avgfee", "avgtxsize"], default is "".
+
 # Example
 ```julia-repl
 julia> collect_block_stats(auth, 700_000, 700_005)
@@ -69,8 +72,9 @@ Collect statistics by iterating over a range of blocks in batches.
 - `block_start::Int64` : Starting block height
 - `block_end::Int64` : Ending block height
 
-# Optional Arguments
+# Optional keywords
 - `batchsize::Int64` : Request can be sent in batches of given size, default is set to 50.
+- `stats` : Select specific values to return, e.g. ["avgfee", "avgtxsize"], default is "".
 
 # Example
 ```julia-repl
@@ -113,7 +117,8 @@ function collect_block_stats_batch(auth::UserAuth, block_start::Int64,
         params = JSON.json(i:j)
         
         try
-            results = post_request_batch(auth, "getblockstats"; params = params)            
+            results = post_request_batch(auth,"getblockstats"; 
+                                         params = params, stats = stats)            
         catch e
             @info "Ran into error $(e)"
             @info "Could not fetch data for blocks $(i) to $(j), will continue to next batch!"
