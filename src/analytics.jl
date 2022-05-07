@@ -106,7 +106,7 @@ function collect_block_stats_batch(auth::UserAuth, block_start::Int64,
     i = block_start
     last_batch = false
 
-    while i < block_end
+    while i ≤ block_end
 
         j = i + batchsize
 
