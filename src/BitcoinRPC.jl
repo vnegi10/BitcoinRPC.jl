@@ -25,6 +25,7 @@ export show_best_block_hash,
     collect_network_stats_batch,
     plot_avg_fee,
     plot_max_fee,
+    plot_num_txs,
     UserAuth,
     StringOrInt
 
