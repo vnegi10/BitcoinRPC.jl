@@ -34,7 +34,7 @@ function sato_to_btc!(result)
     all_keys = keys(result) |> collect
 
     for key in all_keys
-        if occursin("fee", key)
+        if occursin("fee", key) || occursin("total_out", key)
             result[key] /= 1e8
         end
     end

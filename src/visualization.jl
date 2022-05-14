@@ -58,3 +58,23 @@ function plot_num_txs(auth::UserAuth, block_start::Int64, block_end::Int64;
 
     return plt
 end
+
+
+"""
+"""
+function plot_total_output(auth::UserAuth, block_start::Int64, block_end::Int64; 
+                           batchsize::Int64 = 50)
+
+    df_stats = collect_block_stats_batch(auth, block_start, block_end; 
+                                         batchsize = batchsize, 
+                                         stats = ["total_out", "height"])
+
+    plt = lineplot(df_stats[!, :height], df_stats[!, :total_out],
+                   title  = "Total amount in all outputs (excluding coinbase + rewards)", 
+                   xlabel = "Block height", ylabel = "Amount [BTC]",
+                   xticks = true, yticks = true, 
+                   border = :bold,
+                   canvas = BrailleCanvas, width = 100, height = 20)
+
+    return plt
+end
