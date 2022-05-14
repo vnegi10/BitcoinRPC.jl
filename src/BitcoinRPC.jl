@@ -23,10 +23,11 @@ export show_best_block_hash,
     collect_block_stats,
     collect_block_stats_batch,
     collect_network_stats_batch,
+    plot_avg_fee,
     UserAuth,
     StringOrInt
 
-using JSON, HTTP, Dates, DataFrames
+using JSON, HTTP, Dates, DataFrames, UnicodePlots
 
 include("types.jl")
 include("request.jl")
@@ -35,6 +36,7 @@ include("blockchainRPC.jl")
 include("miningRPC.jl")
 
 include("analytics.jl")
+include("visualization.jl")
 include("helpers.jl")
 
 end # module
