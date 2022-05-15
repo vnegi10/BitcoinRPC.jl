@@ -60,5 +60,26 @@ show_network_hashps(auth::UserAuth; nblocks::Int64 = -1, height::Int64 = -1)
 ```@docs
 collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64; stats = "")
 
-collect_network_stats(auth::UserAuth, block_start::Int64, block_end::Int64)
+collect_block_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64; 
+                          batchsize::Int64 = 50, stats = "")
+
+collect_network_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64;
+                            batchsize::Int64 = 50)
+```
+
+## Generate unicode plots in the REPL
+```@docs
+plot_avg_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_max_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_total_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_num_txs(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_total_output(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_network_hashrate(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_network_difficulty(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 ```
