@@ -34,7 +34,7 @@ function sato_to_btc!(result)
     all_keys = keys(result) |> collect
 
     for key in all_keys
-        if occursin("fee", key)
+        if occursin("fee", key) || occursin("total_out", key)
             result[key] /= 1e8
         end
     end
@@ -58,4 +58,74 @@ function convert_to_int(params::String)
 	end
     
     return params_int
+end
+
+# Get block stats for a specified interval
+function get_block_df(auth::UserAuth, weeks::Int64; batchsize::Int64, stats)
+
+    # Ideally, 2016 blocks should be generated every 2 weeks
+    num_blocks  = 1008 * weeks
+    block_end   = show_block_count(auth)
+    block_start = block_end - num_blocks
+
+    df_stats = collect_block_stats_batch(auth, block_start, block_end; 
+                                         batchsize = batchsize, 
+                                         stats = stats)
+
+    return df_stats
+end
+
+# Get network stats for a specified interval
+function get_network_df(auth::UserAuth, weeks::Int64; batchsize::Int64)
+
+    # Ideally, 2016 blocks should be generated every 2 weeks
+    num_blocks  = 1008 * weeks
+    block_end   = show_block_count(auth)
+    block_start = block_end - num_blocks
+
+    df_stats = collect_network_stats_batch(auth, block_start, block_end; 
+                                           batchsize = batchsize)
+
+    return df_stats
+end
+
+# Convert to per day time interval
+function get_daily_data(df_stats::DataFrame, stats_type::String)
+
+    rows, cols = size(df_stats)
+    day, col_per_day = Date[], Float64[]
+    df_temp = select(df_stats, Not(:time))
+    col_name = names(df_temp)[1]
+    j = 1
+
+    for i = 2:rows
+
+        # Loop up to the point when date changes, then sum all the entries till then
+        if Dates.Date(df_stats[!, :time][i]) != Dates.Date(df_stats[!, :time][i - 1])			
+            start_at = j
+            stop_at  = i - 1 
+            j = i
+                
+        # When counter reaches the last day
+        elseif i == rows
+            start_at = j
+            stop_at  = i
+        else
+            continue
+        end    
+        
+        # df_temp will have only one column which can be selected by its index
+        if stats_type == "mean"
+            col_value = df_temp[!, 1][start_at:stop_at] |> Statistics.mean
+        elseif stats_type == "sum"
+            col_value = df_temp[!, 1][start_at:stop_at] |> sum
+        end
+
+        push!(day, Dates.Date(df_stats[!, :time][stop_at]))
+        push!(col_per_day, col_value)
+    end
+
+    df_stats_per_day = DataFrame("time" => day, col_name => col_per_day)
+
+    return df_stats_per_day
 end
