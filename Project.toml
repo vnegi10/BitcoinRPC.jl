@@ -1,7 +1,7 @@
 name = "BitcoinRPC"
 uuid = "9b85cdd3-b0ee-4013-9538-086350204d42"
 authors = ["Vikas Negi <vikas.negi10@gmail.com>"]
-version = "1.0.0"
+version = "1.0.1"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
