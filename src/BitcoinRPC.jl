@@ -28,6 +28,7 @@ export show_best_block_hash,
     plot_num_txs,
     plot_total_output,
     plot_network_hashrate,
+    plot_network_difficulty,
     UserAuth,
     StringOrInt
 
