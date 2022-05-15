@@ -60,7 +60,7 @@ function convert_to_int(params::String)
     return params_int
 end
 
-# Get stats for a specified window_interval
+# Get block stats for a specified interval
 function get_block_df(auth::UserAuth, weeks::Int64; batchsize::Int64, stats)
 
     # Ideally, 2016 blocks should be generated every 2 weeks
@@ -71,6 +71,20 @@ function get_block_df(auth::UserAuth, weeks::Int64; batchsize::Int64, stats)
     df_stats = collect_block_stats_batch(auth, block_start, block_end; 
                                          batchsize = batchsize, 
                                          stats = stats)
+
+    return df_stats
+end
+
+# Get network stats for a specified interval
+function get_network_df(auth::UserAuth, weeks::Int64; batchsize::Int64)
+
+    # Ideally, 2016 blocks should be generated every 2 weeks
+    num_blocks  = 1008 * weeks
+    block_end   = show_block_count(auth)
+    block_start = block_end - num_blocks
+
+    df_stats = collect_network_stats_batch(auth, block_start, block_end; 
+                                           batchsize = batchsize)
 
     return df_stats
 end
