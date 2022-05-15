@@ -2,16 +2,14 @@
 
 """
 """
-function plot_avg_fee(auth::UserAuth, block_start::Int64, block_end::Int64; 
-                      batchsize::Int64 = 50)
+function plot_avg_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = collect_block_stats_batch(auth, block_start, block_end; 
-                                         batchsize = batchsize, 
-                                         stats = ["avgfee", "height"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
+                            stats = ["avgfee", "time"])
 
-    plt = lineplot(df_stats[!, :height], df_stats[!, :avgfee],
+    plt = lineplot(df_stats[!, :time], df_stats[!, :avgfee],
                    title  = "Average fee in the block", 
-                   xlabel = "Block height", ylabel = "Avg fee [BTC]",
+                   xlabel = "Block time", ylabel = "Avg fee [BTC]",
                    xticks = true, yticks = true, 
                    border = :bold,
                    canvas = BrailleCanvas, width = 100, height = 20)
@@ -22,16 +20,14 @@ end
 
 """
 """
-function plot_max_fee(auth::UserAuth, block_start::Int64, block_end::Int64; 
-                      batchsize::Int64 = 50)
+function plot_max_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = collect_block_stats_batch(auth, block_start, block_end; 
-                                         batchsize = batchsize, 
-                                         stats = ["maxfee", "height"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
+                            stats = ["maxfee", "time"])
 
-    plt = lineplot(df_stats[!, :height], df_stats[!, :maxfee],
+    plt = lineplot(df_stats[!, :time], df_stats[!, :maxfee],
                    title  = "Maximum fee in the block", 
-                   xlabel = "Block height", ylabel = "Max fee [BTC]",
+                   xlabel = "Block time", ylabel = "Max fee [BTC]",
                    xticks = true, yticks = true, 
                    border = :bold,
                    canvas = BrailleCanvas, width = 100, height = 20)
@@ -42,16 +38,14 @@ end
 
 """
 """
-function plot_num_txs(auth::UserAuth, block_start::Int64, block_end::Int64; 
-                      batchsize::Int64 = 50)
+function plot_num_txs(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = collect_block_stats_batch(auth, block_start, block_end; 
-                                         batchsize = batchsize, 
-                                         stats = ["txs", "height"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
+                            stats = ["txs", "time"])
 
-    plt = lineplot(df_stats[!, :height], df_stats[!, :txs],
+    plt = lineplot(df_stats[!, :time], df_stats[!, :txs],
                    title  = "Number of transactions", 
-                   xlabel = "Block height", ylabel = "Num. txs",
+                   xlabel = "Block time", ylabel = "Num. txs",
                    xticks = true, yticks = true, 
                    border = :bold,
                    canvas = BrailleCanvas, width = 100, height = 20)
@@ -62,16 +56,14 @@ end
 
 """
 """
-function plot_total_output(auth::UserAuth, block_start::Int64, block_end::Int64; 
-                           batchsize::Int64 = 50)
+function plot_total_output(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = collect_block_stats_batch(auth, block_start, block_end; 
-                                         batchsize = batchsize, 
-                                         stats = ["total_out", "height"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
+                            stats = ["total_out", "time"])
 
-    plt = lineplot(df_stats[!, :height], df_stats[!, :total_out],
+    plt = lineplot(df_stats[!, :time], df_stats[!, :total_out],
                    title  = "Total amount in all outputs (excluding coinbase + rewards)", 
-                   xlabel = "Block height", ylabel = "Amount [BTC]",
+                   xlabel = "Block time", ylabel = "Amount [BTC]",
                    xticks = true, yticks = true, 
                    border = :bold,
                    canvas = BrailleCanvas, width = 100, height = 20)
