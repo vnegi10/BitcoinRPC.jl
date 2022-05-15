@@ -141,9 +141,9 @@ julia> collect_network_stats_batch(auth, 600_000, 601_000, batchsize = 100)
     5 │ 600004  2019-10-19T00:46:56    9.59633e19  1.34059e13
 ```
 
-Key blockchain metrics can be visualized right within the REPL, by making use of
-the provided plotting functions. UnicodePlots.jl is being used to generate the plots. 
-Some examples are shown below:
+By making use of the provided plotting functions, key blockchain metrics can be visualized 
+right within the REPL. UnicodePlots.jl is being used to generate these plots. Some examples 
+are shown below:
 
 ```julia
 julia> plot_total_fee(auth, 16, batchsize = 500)
