@@ -88,3 +88,44 @@ function get_network_df(auth::UserAuth, weeks::Int64; batchsize::Int64)
 
     return df_stats
 end
+
+# Convert to per day time interval
+function get_daily_data(df_stats::DataFrame, stats_type::String)
+
+    rows, cols = size(df_stats)
+    day, col_per_day = Date[], Float64[]
+    df_temp = select(df_stats, Not(:time))
+    col_name = names(df_temp)[1]
+    j = 1
+
+    for i = 2:rows
+
+        # Loop up to the point when date changes, then sum all the entries till then
+        if Dates.Date(df_stats[!, :time][i]) != Dates.Date(df_stats[!, :time][i - 1])			
+            start_at = j
+            stop_at  = i - 1 
+            j = i
+                
+        # When counter reaches the last day
+        elseif i == rows
+            start_at = j
+            stop_at  = i
+        else
+            continue
+        end    
+        
+        # df_temp will have only one column which can be selected by its index
+        if stats_type == "mean"
+            col_value = df_temp[!, 1][start_at:stop_at] |> Statistics.mean
+        elseif stats_type == "sum"
+            col_value = df_temp[!, 1][start_at:stop_at] |> sum
+        end
+
+        push!(day, Dates.Date(df_stats[!, :time][stop_at]))
+        push!(col_per_day, col_value)
+    end
+
+    df_stats_per_day = DataFrame("time" => day, col_name => col_per_day)
+
+    return df_stats_per_day
+end

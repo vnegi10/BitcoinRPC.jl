@@ -47,11 +47,13 @@ function plot_avg_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
     df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
                             stats = ["avgfee", "time"])
 
+    df_stats = get_daily_data(df_stats, "mean")
+
     plt = lineplot(df_stats[!, :time], df_stats[!, :avgfee],
-                   title  = "Average fee in the block", 
-                   xlabel = "Block time", ylabel = "Avg fee [BTC]",
+                   title  = "Daily average fee in the block", 
+                   xlabel = "Time [days]", ylabel = "Average fee [BTC]",
                    xticks = true, yticks = true, 
-                   border = :bold,
+                   border = :bold, color = :yellow,
                    canvas = BrailleCanvas, width = 100, height = 20)
 
     return plt

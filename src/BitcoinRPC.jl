@@ -33,7 +33,7 @@ export show_best_block_hash,
     UserAuth,
     StringOrInt
 
-using JSON, HTTP, Dates, DataFrames, UnicodePlots
+using JSON, HTTP, Dates, DataFrames, UnicodePlots, Statistics
 
 include("types.jl")
 include("request.jl")
