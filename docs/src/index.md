@@ -82,4 +82,6 @@ plot_total_output(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 plot_network_hashrate(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
 plot_network_difficulty(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+plot_block_time_dist(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 ```

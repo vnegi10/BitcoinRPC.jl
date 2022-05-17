@@ -36,5 +36,10 @@
         plt = plot_network_difficulty(AUTH, 1, batchsize = 42)
         @test sizeof(plt) > 0
     end
+
+    @testset "plot_block_time_dist" begin
+        plt = plot_block_time_dist(AUTH, 1, batchsize = 144)
+        @test sizeof(plt) > 0
+    end
     
 end

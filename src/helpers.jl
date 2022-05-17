@@ -129,3 +129,15 @@ function get_daily_data(df_stats::DataFrame, stats_type::String)
 
     return df_stats_per_day
 end
+
+# Get block time intervals
+function get_block_intervals(df_stats::DataFrame)
+  
+    # Difference between consecutive blocks
+    Δblock_tstamps = df_stats[!, :time][2:end] - df_stats[!, :time][1:end-1]
+  
+    # Convert ms to mins
+    block_mins = [Δblock_tstamps[i].value / 60000 for i in eachindex(Δblock_tstamps)]
+
+    return DataFrame(block_mins = block_mins)
+end
