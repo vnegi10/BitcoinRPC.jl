@@ -420,6 +420,37 @@ end
 
 
 """
+    plot_block_time_dist(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+Shows the distribution of block generation times (in mins) for the selected duration.
+
+# Arguments
+- `auth::UserAuth` : User credentials, e.g. `auth = UserAuth("username", "password", port)`
+- `weeks::Int64` : Number of weeks in the past from latest block height
+
+# Optional keywords
+- `batchsize::Int64` : Request can be sent in batches of given size, default is set to 50. 
+
+# Example
+```julia-repl
+julia> plot_block_time_dist(auth, 24, batchsize = 500)
+                                                           Distribution of BTC block times                        
+                                    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓ 
+                     [  0.0,  10.0) ┃████████████████████████████████████████████████████████████████████  15461┃ 
+                     [ 10.0,  20.0) ┃████████████████████████▌ 5552                                             ┃ 
+                     [ 20.0,  30.0) ┃████████▉ 2038                                                             ┃ 
+                     [ 30.0,  40.0) ┃███▎ 722                                                                   ┃ 
+                     [ 40.0,  50.0) ┃█▏ 242                                                                     ┃ 
+   Block time [mins] [ 50.0,  60.0) ┃▍ 79                                                                       ┃ 
+                     [ 60.0,  70.0) ┃▎ 35                                                                       ┃ 
+                     [ 70.0,  80.0) ┃▏ 11                                                                       ┃ 
+                     [ 80.0,  90.0) ┃▏ 9                                                                        ┃ 
+                     [ 90.0, 100.0) ┃▏ 2                                                                        ┃ 
+                     [100.0, 110.0) ┃▏ 1                                                                        ┃ 
+                     [110.0, 120.0) ┃▏ 1                                                                        ┃ 
+                                    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ 
+                                                                   Number of counts                               
+```
 """
 function plot_block_time_dist(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
