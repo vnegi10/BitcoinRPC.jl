@@ -30,6 +30,7 @@ export show_best_block_hash,
     plot_total_output,
     plot_network_hashrate,
     plot_network_difficulty,
+    plot_block_time_dist,
     UserAuth,
     StringOrInt
 

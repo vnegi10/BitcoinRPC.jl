@@ -417,3 +417,23 @@ function plot_network_difficulty(auth::UserAuth, weeks::Int64; batchsize::Int64 
 
     return plt
 end
+
+
+"""
+"""
+function plot_block_time_dist(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
+
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
+                            stats = ["time"])
+
+    df_intervals = get_block_intervals(df_stats)
+
+    plt = histogram(filter(x -> x > 0, df_intervals[!, :block_mins]),
+                    nbins = 20,
+                    title  = "Distribution of BTC block times", 
+                    ylabel = "Block time [mins]", xlabel = "Number of counts",
+                    vertical = false, border = :bold, color = :yellow,
+                    width = 75, height = 20)
+
+    return plt
+end
