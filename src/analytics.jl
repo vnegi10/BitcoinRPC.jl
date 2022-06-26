@@ -27,14 +27,19 @@ julia> collect_block_stats(auth, 700_000, 700_005)
    5 │ 5.484e-5        1.1e-7        831  0000000000000000000e360e05cb9d7b…  700004   1174  0.0028332      4.77e-6      53046   1.323e- ⋯
 ```
 """
-@memoize function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64; stats = "")
+@memoize function collect_block_stats(
+    auth::UserAuth,
+    block_start::Int64,
+    block_end::Int64;
+    stats = "",
+)
 
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
-	results = Dict{String, Any}[]
+    results = Dict{String,Any}[]
 
-    get_params(i::Int64) = isempty(stats) ? [i] : [i, stats]		
-    
+    get_params(i::Int64) = isempty(stats) ? [i] : [i, stats]
+
     for i = block_start:block_end
         try
             result = post_request(auth, "getblockstats"; params = get_params(i))
@@ -45,18 +50,18 @@ julia> collect_block_stats(auth, 700_000, 700_005)
             @info "Ran into error $(e)"
             @info "Could not fetch data for block $(i), will continue to next!"
             continue
-        end 
-    end   
+        end
+    end
 
-	df_stats = DataFrame()
-    
+    df_stats = DataFrame()
+
     try
         df_stats = vcat(DataFrame.(results)...)
     catch e
         @info "Unable to create a DataFrame, check this error: $(e)"
     end
 
-	return df_stats
+    return df_stats
 end
 
 
@@ -92,9 +97,13 @@ julia> @time collect_block_stats_batch(auth, 500_000, 505_000, batchsize = 1000)
 ...
 ```
 """
-@memoize function collect_block_stats_batch(auth::UserAuth, block_start::Int64, 
-                                   block_end::Int64; batchsize::Int64 = 50,
-                                   stats = "")
+@memoize function collect_block_stats_batch(
+    auth::UserAuth,
+    block_start::Int64,
+    block_end::Int64;
+    batchsize::Int64 = 50,
+    stats = "",
+)
 
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
@@ -115,17 +124,17 @@ julia> @time collect_block_stats_batch(auth, 500_000, 505_000, batchsize = 1000)
             last_batch = true
         end
         params = JSON.json(i:j)
-        
+
         try
-            results = post_request_batch(auth,"getblockstats"; 
-                                         params = params, stats = stats)            
+            results =
+                post_request_batch(auth, "getblockstats"; params = params, stats = stats)
         catch e
             @info "Ran into error $(e)"
             @info "Could not fetch data for blocks $(i) to $(j), will continue to next batch!"
             i = j + 1
             continue
         end
-        
+
         for result in results
             delete!(result, "feerate_percentiles")
             sato_to_btc!(result)
@@ -137,17 +146,17 @@ julia> @time collect_block_stats_batch(auth, 500_000, 505_000, batchsize = 1000)
         end
 
         i = j + 1
-    end 
-    
+    end
+
     df_stats = DataFrame()
-    
+
     try
         df_stats = vcat(DataFrame.(all_results)...)
     catch e
         @info "Unable to create a DataFrame, check this error: $(e)"
     end
 
-	return df_stats    
+    return df_stats
 end
 
 
@@ -179,20 +188,29 @@ julia> collect_network_stats_batch(auth, 600_000, 600_699, batchsize = 100)
    5 │ 600004  2019-10-19T00:46:56    9.59633e19  1.34059e13
 ```
 """
-@memoize function collect_network_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64;
-                                     batchsize::Int64 = 50)
+@memoize function collect_network_stats_batch(
+    auth::UserAuth,
+    block_start::Int64,
+    block_end::Int64;
+    batchsize::Int64 = 50,
+)
 
-    df_stats = collect_block_stats_batch(auth, block_start, block_end, batchsize = batchsize,
-                                         stats = ["height", "time"])
+    df_stats = collect_block_stats_batch(
+        auth,
+        block_start,
+        block_end,
+        batchsize = batchsize,
+        stats = ["height", "time"],
+    )
 
     network_hash = [show_network_hashps(auth, height = h) for h in df_stats[!, :height]]
 
     # Based on calculation from https://en.bitcoin.it/wiki/Difficulty
     # Network hash rate = D * 2**32 / 600
     difficulty = (network_hash * 600) / 2^32
-    
+
     insertcols!(df_stats, :time, :network_hash => network_hash, after = true)
     insertcols!(df_stats, :network_hash, :difficulty => difficulty, after = true)
 
     return df_stats
-end    
+end
