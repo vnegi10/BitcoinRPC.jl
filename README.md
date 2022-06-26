@@ -149,8 +149,8 @@ comparison below:
 **Without caching**
 ```julia
 julia> for i = 1:5
-              @time collect_block_stats_batch(auth, 500_000, 502_000, batchsize = 100)
-              end
+           @time collect_block_stats_batch(auth, 500_000, 502_000, batchsize = 100)
+       end
  13.056209 seconds (1.53 M allocations: 73.190 MiB, 0.24% gc time, 17.68% compilation time)
  10.712428 seconds (1.46 M allocations: 69.270 MiB, 0.24% gc time)
  10.675426 seconds (1.46 M allocations: 69.270 MiB, 0.23% gc time)
@@ -161,7 +161,7 @@ julia> for i = 1:5
 **With caching**
 ```julia
 julia> for i = 1:5
-       @time collect_block_stats_batch(auth, 500_000, 502_000, batchsize = 100)
+           @time collect_block_stats_batch(auth, 500_000, 502_000, batchsize = 100)
        end
  14.329239 seconds (1.48 M allocations: 71.675 MiB, 0.08% gc time, 16.33% compilation time)
   0.000021 seconds (13 allocations: 784 bytes)
