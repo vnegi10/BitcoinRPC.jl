@@ -141,6 +141,34 @@ julia> collect_network_stats_batch(auth, 600_000, 601_000, batchsize = 100)
     5 │ 600004  2019-10-19T00:46:56    9.59633e19  1.34059e13
 ```
 
+Results for on-chain analytics are cached via the use of `memoization.jl`. This will 
+dramatically speed up repeated calls to the same function. See an example comparison
+below:
+
+**Without caching**
+```julia
+julia> for i = 1:5
+              @time collect_block_stats_batch(auth, 500_000, 502_000, batchsize = 100)
+              end
+ 13.056209 seconds (1.53 M allocations: 73.190 MiB, 0.24% gc time, 17.68% compilation time)
+ 10.712428 seconds (1.46 M allocations: 69.270 MiB, 0.24% gc time)
+ 10.675426 seconds (1.46 M allocations: 69.270 MiB, 0.23% gc time)
+ 10.676681 seconds (1.46 M allocations: 69.275 MiB)
+ 10.616955 seconds (1.46 M allocations: 69.270 MiB, 0.18% gc time)
+```
+
+**With caching**
+```julia
+julia> for i = 1:5
+       @time collect_block_stats_batch(auth, 500_000, 502_000, batchsize = 100)
+       end
+ 14.329239 seconds (1.48 M allocations: 71.675 MiB, 0.08% gc time, 16.33% compilation time)
+  0.000021 seconds (13 allocations: 784 bytes)
+  0.000002 seconds (13 allocations: 784 bytes)
+  0.000002 seconds (13 allocations: 784 bytes)
+  0.000002 seconds (13 allocations: 784 bytes)
+```
+
 By making use of the provided plotting functions, key blockchain metrics can be visualized 
 right within the REPL. UnicodePlots.jl is being used to generate these plots. Some examples 
 are shown below:
