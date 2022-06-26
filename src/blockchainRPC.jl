@@ -118,7 +118,7 @@ julia> show_block_hash(auth, height = 696969)
 ```
 """
 function show_block_hash(auth::UserAuth; height::Int64 = 0)
-    
+
     @assert 0 ≤ height ≤ show_block_count(auth) "Invalid block height"
 
     return do_try_catch(auth, "getblockhash", params = [height])
@@ -153,7 +153,7 @@ Dict{String, Any} with 15 entries:
 ...
 ```
 """
-function show_block_header(auth::UserAuth; blockhash::String, verbose::Bool=true)
+function show_block_header(auth::UserAuth; blockhash::String, verbose::Bool = true)
 
     return do_try_catch(auth, "getblockheader", params = [blockhash, verbose])
 end
@@ -188,9 +188,9 @@ Dict{String, Any} with 29 entries:
 function show_block_stats(auth::UserAuth; hashORheight::StringOrInt = 0, stats = "")
 
     result = ""
-    
+
     get_params() = isempty(stats) ? [hashORheight] : [hashORheight, stats]
-        
+
     result = do_try_catch(auth, "getblockstats", params = get_params())
     sato_to_btc!(result)
 
@@ -375,7 +375,11 @@ julia> show_mempool_raw(auth)
  ...
 ```
 """
-function show_mempool_raw(auth::UserAuth; verbose::Bool = false, mempool_sequence::Bool = false)
+function show_mempool_raw(
+    auth::UserAuth;
+    verbose::Bool = false,
+    mempool_sequence::Bool = false,
+)
 
     result = do_try_catch(auth, "getrawmempool", params = [verbose, mempool_sequence])
 
@@ -390,9 +394,14 @@ end
 
 Returns details about an unspent transaction output.
 """
-function show_tx_out(auth::UserAuth; txid::String, n::Int64 = 1, include_mempool::Bool = true)
+function show_tx_out(
+    auth::UserAuth;
+    txid::String,
+    n::Int64 = 1,
+    include_mempool::Bool = true,
+)
 
-    return do_try_catch(auth, "gettxout", params = [txid, n, include_mempool])    
+    return do_try_catch(auth, "gettxout", params = [txid, n, include_mempool])
 end
 
 
