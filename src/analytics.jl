@@ -27,7 +27,7 @@ julia> collect_block_stats(auth, 700_000, 700_005)
    5 │ 5.484e-5        1.1e-7        831  0000000000000000000e360e05cb9d7b…  700004   1174  0.0028332      4.77e-6      53046   1.323e- ⋯
 ```
 """
-function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64; stats = "")
+@memoize function collect_block_stats(auth::UserAuth, block_start::Int64, block_end::Int64; stats = "")
 
     @assert 0 ≤ block_start < block_end ≤ show_block_count(auth) "Invalid block height"
 
@@ -92,7 +92,7 @@ julia> @time collect_block_stats_batch(auth, 500_000, 505_000, batchsize = 1000)
 ...
 ```
 """
-function collect_block_stats_batch(auth::UserAuth, block_start::Int64, 
+@memoize function collect_block_stats_batch(auth::UserAuth, block_start::Int64, 
                                    block_end::Int64; batchsize::Int64 = 50,
                                    stats = "")
 
@@ -179,7 +179,7 @@ julia> collect_network_stats_batch(auth, 600_000, 600_699, batchsize = 100)
    5 │ 600004  2019-10-19T00:46:56    9.59633e19  1.34059e13
 ```
 """
-function collect_network_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64;
+@memoize function collect_network_stats_batch(auth::UserAuth, block_start::Int64, block_end::Int64;
                                      batchsize::Int64 = 50)
 
     df_stats = collect_block_stats_batch(auth, block_start, block_end, batchsize = batchsize,
