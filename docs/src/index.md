@@ -4,7 +4,9 @@
 ## Overview
 BitcoinRPC.jl provides a Julia wrapper to Bitcoin's JSON-RPC API. Most of the 
 [blockchain and mining RPCs](https://developer.bitcoin.org/reference/rpc/index.html) 
-have been implemented in the form of callable functions. Depending on the operation, a function can return data (either as a DataFrame or Dict) or the associated HTTP response (Dict).
+have been implemented in the form of callable functions. Depending on the operation, 
+a function can return data (either as a DataFrame or Dict) or the associated HTTP 
+response (Dict).
 
 ## Available functions
 ```@index
