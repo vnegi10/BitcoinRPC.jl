@@ -44,17 +44,24 @@ julia> plot_avg_fee(auth, 4, batchsize = 100)
 """
 function plot_avg_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
-                            stats = ["avgfee", "time"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, stats = ["avgfee", "time"])
 
     df_stats = get_daily_data(df_stats, "mean")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :avgfee],
-                   title  = "Daily average fee in the block", 
-                   xlabel = "Time [days]", ylabel = "Average fee [BTC]",
-                   xticks = true, yticks = true, 
-                   border = :bold, color = :yellow,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :avgfee],
+        title = "Daily average fee in the block",
+        xlabel = "Time [days]",
+        ylabel = "Average fee [BTC]",
+        xticks = true,
+        yticks = true,
+        border = :bold,
+        color = :yellow,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -104,17 +111,24 @@ julia> plot_max_fee(auth, 4, batchsize = 100)
 """
 function plot_max_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
-                            stats = ["maxfee", "time"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, stats = ["maxfee", "time"])
 
     df_stats = get_daily_data(df_stats, "mean")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :maxfee],
-                   title  = "Daily average maximum fee in the block", 
-                   xlabel = "Time [days]", ylabel = "Max. fee [BTC]",
-                   xticks = true, yticks = true, 
-                   border = :bold, color = :white,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :maxfee],
+        title = "Daily average maximum fee in the block",
+        xlabel = "Time [days]",
+        ylabel = "Max. fee [BTC]",
+        xticks = true,
+        yticks = true,
+        border = :bold,
+        color = :white,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -164,17 +178,25 @@ julia> plot_total_fee(auth, 4, batchsize = 25)
 """
 function plot_total_fee(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
-                            stats = ["totalfee", "time"])
+    df_stats =
+        get_block_df(auth, weeks, batchsize = batchsize, stats = ["totalfee", "time"])
 
     df_stats = get_daily_data(df_stats, "mean")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :totalfee],
-                   title  = "Daily average total fee in the block", 
-                   xlabel = "Time [days]", ylabel = "Total fee [BTC]",
-                   xticks = true, yticks = true, 
-                   border = :bold, color = :cyan,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :totalfee],
+        title = "Daily average total fee in the block",
+        xlabel = "Time [days]",
+        ylabel = "Total fee [BTC]",
+        xticks = true,
+        yticks = true,
+        border = :bold,
+        color = :cyan,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -225,17 +247,24 @@ julia> plot_num_txs(auth, 4, batchsize = 100)
 """
 function plot_num_txs(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
-                            stats = ["txs", "time"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, stats = ["txs", "time"])
 
     df_stats = get_daily_data(df_stats, "sum")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :txs],
-                   title  = "Daily number of transactions", 
-                   xlabel = "Time [days]", ylabel = "Num. txs",
-                   xticks = true, yticks = true, 
-                   border = :bold, color = :green,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :txs],
+        title = "Daily number of transactions",
+        xlabel = "Time [days]",
+        ylabel = "Num. txs",
+        xticks = true,
+        yticks = true,
+        border = :bold,
+        color = :green,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -286,17 +315,25 @@ julia> plot_total_output(auth, 4, batchsize = 100)
 """
 function plot_total_output(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
-                            stats = ["total_out", "time"])
+    df_stats =
+        get_block_df(auth, weeks, batchsize = batchsize, stats = ["total_out", "time"])
 
     df_stats = get_daily_data(df_stats, "sum")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :total_out],
-                   title  = "Daily total output (excluding coinbase + rewards)", 
-                   xlabel = "Time [days]", ylabel = "Amount [BTC]",
-                   xticks = true, yticks = true, 
-                   border = :bold, color = :magenta,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :total_out],
+        title = "Daily total output (excluding coinbase + rewards)",
+        xlabel = "Time [days]",
+        ylabel = "Amount [BTC]",
+        xticks = true,
+        yticks = true,
+        border = :bold,
+        color = :magenta,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -349,12 +386,20 @@ function plot_network_hashrate(auth::UserAuth, weeks::Int64; batchsize::Int64 = 
 
     df_stats = get_daily_data(select(df_stats, :time, :network_hash), "mean")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :network_hash],
-                   title  = "Daily average network hashrate", 
-                   xlabel = "Time [days]", ylabel = "Hashes per second",
-                   xticks = true, yticks = true,
-                   border = :bold, color = :normal,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :network_hash],
+        title = "Daily average network hashrate",
+        xlabel = "Time [days]",
+        ylabel = "Hashes per second",
+        xticks = true,
+        yticks = true,
+        border = :bold,
+        color = :normal,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -408,12 +453,20 @@ function plot_network_difficulty(auth::UserAuth, weeks::Int64; batchsize::Int64 
 
     df_stats = get_daily_data(select(df_stats, :time, :difficulty), "mean")
 
-    plt = lineplot(df_stats[!, :time], df_stats[!, :difficulty],
-                   title  = "Daily average network difficulty", 
-                   xlabel = "Time [days]", ylabel = "Estimated difficulty",
-                   xticks = true, yticks = true, yscale = :log10,
-                   border = :bold,
-                   canvas = BrailleCanvas, width = 100, height = 20)
+    plt = lineplot(
+        df_stats[!, :time],
+        df_stats[!, :difficulty],
+        title = "Daily average network difficulty",
+        xlabel = "Time [days]",
+        ylabel = "Estimated difficulty",
+        xticks = true,
+        yticks = true,
+        yscale = :log10,
+        border = :bold,
+        canvas = BrailleCanvas,
+        width = 100,
+        height = 20,
+    )
 
     return plt
 end
@@ -454,17 +507,22 @@ julia> plot_block_time_dist(auth, 24, batchsize = 500)
 """
 function plot_block_time_dist(auth::UserAuth, weeks::Int64; batchsize::Int64 = 50)
 
-    df_stats = get_block_df(auth, weeks, batchsize = batchsize, 
-                            stats = ["time"])
+    df_stats = get_block_df(auth, weeks, batchsize = batchsize, stats = ["time"])
 
     df_intervals = get_block_intervals(df_stats)
 
-    plt = histogram(filter(x -> x > 0, df_intervals[!, :block_mins]),
-                    nbins = 20,
-                    title  = "Distribution of BTC block times", 
-                    ylabel = "Block time [mins]", xlabel = "Number of counts",
-                    vertical = false, border = :bold, color = :yellow,
-                    width = 75, height = 20)
+    plt = histogram(
+        filter(x -> x > 0, df_intervals[!, :block_mins]),
+        nbins = 20,
+        title = "Distribution of BTC block times",
+        ylabel = "Block time [mins]",
+        xlabel = "Number of counts",
+        vertical = false,
+        border = :bold,
+        color = :yellow,
+        width = 75,
+        height = 20,
+    )
 
     return plt
 end
